@@ -1,0 +1,3 @@
+com.sydigit.yzwater.framework.security.config.YzSecurityAutoConfiguration
+com.sydigit.yzwater.framework.security.config.YzWebSecurityConfigurerAdapter
+com.sydigit.yzwater.framework.operatelog.config.YzOperateLogConfiguration

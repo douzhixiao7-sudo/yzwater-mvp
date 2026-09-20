@@ -1,0 +1,208 @@
+// ========================================
+// 快速样式工具类生成器
+// ========================================
+// 说明：
+// 1. 所有 px 值会被 postcss-px-to-viewport 自动转换为 vw
+// 2. 符合移动端适配规则，可以直接使用
+// 3. 1px 的值不会被转换（根据 postcss 配置 minPixelValue: 1）
+// ========================================
+
+// 配置变量
+$max-value: 100; // 最大循环值 (1-100px)，设计稿750px时翻倍
+$step: 1; // 步长
+
+// ========================================
+// Position 定位循环
+// ========================================
+
+// Absolute Left 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .absL#{$i} {
+        position: absolute;
+        left: #{$i}px;
+    }
+}
+
+// Absolute Right 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .absR#{$i} {
+        position: absolute;
+        right: #{$i}px;
+    }
+}
+
+// Absolute Top 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .absT#{$i} {
+        position: absolute;
+        top: #{$i}px;
+    }
+}
+
+// Absolute Bottom 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .absB#{$i} {
+        position: absolute;
+        bottom: #{$i}px;
+    }
+}
+
+// Relative Top 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .relT#{$i} {
+        position: relative;
+        top: #{$i}px;
+    }
+}
+
+// Relative Right 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .relR#{$i} {
+        position: relative;
+        right: #{$i}px;
+    }
+}
+
+// Relative Bottom 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .relB#{$i} {
+        position: relative;
+        bottom: #{$i}px;
+    }
+}
+
+// Relative Left 定位 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .relL#{$i} {
+        position: relative;
+        left: #{$i}px;
+    }
+}
+
+
+// ========================================
+// Margin 外边距循环
+// ========================================
+
+// Margin 全方向 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .marAll#{$i} {
+        margin: #{$i}px;
+    }
+}
+
+// Margin Left (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .marL#{$i} {
+        margin-left: #{$i}px;
+    }
+}
+
+// Margin Right (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .marR#{$i} {
+        margin-right: #{$i}px;
+    }
+}
+
+// Margin Top (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .marT#{$i} {
+        margin-top: #{$i}px;
+    }
+}
+
+// Margin Bottom (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .marB#{$i} {
+        margin-bottom: #{$i}px;
+    }
+}
+
+// ========================================
+// Padding 内边距循环
+// ========================================
+
+// Padding 全方向 (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .padAll#{$i} {
+        padding: #{$i}px;
+    }
+}
+
+// Padding Left (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .padL#{$i} {
+        padding-left: #{$i}px;
+    }
+}
+
+// Padding Right (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .padR#{$i} {
+        padding-right: #{$i}px;
+    }
+}
+
+// Padding Top (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .padT#{$i} {
+        padding-top: #{$i}px;
+    }
+}
+
+// Padding Bottom (1-50px，自动转换为 vw)
+@for $i from 1 through $max-value {
+    .padB#{$i} {
+        padding-bottom: #{$i}px;
+    }
+}
+
+// ========================================
+// Width 宽度循环
+// ========================================
+
+
+// ========================================
+// Font Size 字体大小循环
+// ========================================
+
+// Font Size (12-50px，自动转换为 vw)
+@for $i from 12 through $max-value {
+    .fs#{$i} {
+        font-size: #{$i}px;
+    }
+}
+
+// ========================================
+// Border Radius 圆角循环
+// ========================================
+
+// Border Radius (1-20px，自动转换为 vw)
+@for $i from 1 through 20 {
+    .br#{$i} {
+        border-radius: #{$i}px;
+    }
+}
+
+// ========================================
+// Z-Index 层级循环
+// ========================================
+
+// Z-Index (1-100)
+@for $i from 1 through 100 {
+    .z#{$i} {
+        z-index: #{$i};
+    }
+}
+
+// ========================================
+// Opacity 透明度循环
+// ========================================
+
+// Opacity (0.1-1.0, 步长0.1)
+@for $i from 1 through 10 {
+    .op#{$i} {
+        opacity: #{$i * 0.1};
+    }
+}

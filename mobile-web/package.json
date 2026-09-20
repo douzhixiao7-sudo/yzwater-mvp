@@ -1,0 +1,41 @@
+{
+  "name": "mobile-vue3-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "server": "node server.js"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-types": "0.0.15",
+    "ant-design-vue": "^4.2.6",
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.19",
+    "express": "^5.2.1",
+    "json-bigint": "^1.0.0",
+    "leaflet": "^1.9.4",
+    "leaflet-polycolor": "^2.0.5",
+    "leaflet.markercluster": "^1.5.3",
+    "multer": "^2.0.2",
+    "qrcode": "^1.5.4",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "vuex": "^4.1.0",
+    "weixin-js-sdk": "^1.6.5",
+    "wellknown": "^0.5.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "element-plus": "^2.11.9",
+    "postcss": "^8.4.35",
+    "postcss-px-to-viewport": "^1.1.1",
+    "sass": "^1.77.0",
+    "unplugin-auto-import": "^20.3.0",
+    "unplugin-vue-components": "^30.0.0",
+    "vite": "^5.1.6"
+  }
+}

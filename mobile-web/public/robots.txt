@@ -1,0 +1,11 @@
+# robots.txt for mobile-vue3-app
+
+User-agent: *
+Allow: /
+
+# 禁止爬取的目录（如果有）
+# Disallow: /admin/
+
+# Sitemap（如果有）
+# Sitemap: https://your-domain.com/sitemap.xml
+

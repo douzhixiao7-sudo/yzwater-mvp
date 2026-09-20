@@ -1,0 +1,3 @@
+com.sydigit.yzwater.framework.mq.redis.config.YzRedisMQProducerAutoConfiguration
+com.sydigit.yzwater.framework.mq.redis.config.YzRedisMQConsumerAutoConfiguration
+com.sydigit.yzwater.framework.mq.rabbitmq.config.YzRabbitMQAutoConfiguration

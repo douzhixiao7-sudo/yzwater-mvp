@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.sydigit.yz</groupId>
+        <artifactId>yz</artifactId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>yz-water</artifactId>
+    <packaging>jar</packaging>
+
+    <name>${project.artifactId}</name>
+    <description>GIS 拓展模块，提供 PostGIS + MyBatis + GeoTools 的示例能力</description>
+
+    <dependencies>
+        <!-- Web & Security -->
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-spring-boot-starter-biz-tenant</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-spring-boot-starter-biz-ip</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- MyBatis & 数据访问 -->
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-spring-boot-starter-mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-spring-boot-starter-excel</artifactId>
+        </dependency>
+
+        <!-- 系统模块：复用短信发送能力 -->
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-module-system</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <!-- 基础设施模块：复用参数配置读取能力（短链跳转地址从配置获取） -->
+        <dependency>
+            <groupId>com.sydigit.yz</groupId>
+            <artifactId>yz-module-infra</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- PostGIS -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.postgis</groupId>
+            <artifactId>postgis-jdbc</artifactId>
+        </dependency>
+
+        <!-- GeoTools -->
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-main</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-geojson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-referencing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-epsg-hsql</artifactId>
+            <version>31.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.geotools.xsd</groupId>
+            <artifactId>gt-xsd-kml</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.17.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.hikvision.ga</groupId>
+            <artifactId>artemis-http-client</artifactId>
+            <version>1.1.15.RELEASE</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/artemis-http-client-1.1.15.RELEASE.jar</systemPath>
+        </dependency>
+
+        <!-- 二维码生成（Hutool 依赖 ZXing） -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.3</version>
+        </dependency>
+
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>aliyun-public</id>
+            <name>Aliyun Public</name>
+            <url>https://maven.aliyun.com/repository/public</url>
+        </repository>
+        <repository>
+            <id>osgeo</id>
+            <name>OSGeo Release</name>
+            <url>https://repo.osgeo.org/repository/geotools-releases/</url>
+        </repository>
+    </repositories>
+
+</project>

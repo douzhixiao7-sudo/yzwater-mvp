@@ -1,0 +1,2 @@
+com.sydigit.yzwater.framework.tracer.config.YzTracerAutoConfiguration
+com.sydigit.yzwater.framework.tracer.config.YzMetricsAutoConfiguration

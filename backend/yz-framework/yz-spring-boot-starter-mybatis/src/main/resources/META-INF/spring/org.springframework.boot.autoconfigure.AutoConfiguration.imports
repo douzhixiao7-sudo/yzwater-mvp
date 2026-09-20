@@ -1,0 +1,3 @@
+com.sydigit.yzwater.framework.datasource.config.YzDataSourceAutoConfiguration
+com.sydigit.yzwater.framework.mybatis.config.YzMybatisAutoConfiguration
+com.sydigit.yzwater.framework.translate.config.YzTranslateAutoConfiguration

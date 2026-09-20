@@ -1,0 +1,2 @@
+com.sydigit.yzwater.framework.quartz.config.YzQuartzAutoConfiguration
+com.sydigit.yzwater.framework.quartz.config.YzAsyncAutoConfiguration

@@ -1,0 +1,4 @@
+com.sydigit.yzwater.framework.idempotent.config.YzIdempotentConfiguration
+com.sydigit.yzwater.framework.lock4j.config.YzLock4jConfiguration
+com.sydigit.yzwater.framework.ratelimiter.config.YzRateLimiterConfiguration
+com.sydigit.yzwater.framework.signature.config.YzApiSignatureAutoConfiguration

@@ -1,0 +1,7 @@
+com.sydigit.yzwater.framework.apilog.config.YzApiLogAutoConfiguration
+com.sydigit.yzwater.framework.jackson.config.YzJacksonAutoConfiguration
+com.sydigit.yzwater.framework.swagger.config.YzSwaggerAutoConfiguration
+com.sydigit.yzwater.framework.web.config.YzWebAutoConfiguration
+com.sydigit.yzwater.framework.xss.config.YzXssAutoConfiguration
+com.sydigit.yzwater.framework.banner.config.YzBannerAutoConfiguration
+com.sydigit.yzwater.framework.encrypt.config.YzApiEncryptAutoConfiguration
