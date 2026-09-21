@@ -41,13 +41,6 @@
             <systemPath>${project.basedir}/../lib/artemis-http-client-1.1.15.RELEASE.jar</systemPath>
         </dependency>
 
-        <!-- IoT 物联网相关模块。默认注释，保证编译速度 -->
-        <dependency>
-            <groupId>com.sydigit.yz</groupId>
-            <artifactId>yz-module-iot-biz</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!-- spring boot 配置所需依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -90,14 +83,6 @@
                         <include>
                             <groupId>com.sydigit.yz</groupId>
                             <artifactId>yz-water</artifactId>
-                        </include>
-                        <include>
-                            <groupId>com.sydigit.yz</groupId>
-                            <artifactId>yz-module-iot-biz</artifactId>
-                        </include>
-                        <include>
-                            <groupId>com.sydigit.yz</groupId>
-                            <artifactId>yz-module-iot-core</artifactId>
                         </include>
                         <include>
                             <groupId>com.sydigit.yz</groupId>
@@ -186,7 +171,7 @@
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
                             <includeScope>runtime</includeScope>
                             <!-- 下列内部 jar 已打进 yz-server.jar（BOOT-INF/lib），避免重复复制到 target/lib -->
-                            <excludeArtifactIds>yz-module-system,yz-module-infra,yz-water,yz-module-report,yz-module-iot-biz,yz-module-iot-core,yz-common,yz-spring-boot-starter-biz-data-permission,yz-spring-boot-starter-biz-tenant,yz-spring-boot-starter-biz-ip,yz-spring-boot-starter-security,yz-spring-boot-starter-web,yz-spring-boot-starter-websocket,yz-spring-boot-starter-mybatis,yz-spring-boot-starter-redis,yz-spring-boot-starter-job,yz-spring-boot-starter-mq,yz-spring-boot-starter-excel,yz-spring-boot-starter-monitor,yz-spring-boot-starter-protection</excludeArtifactIds>
+                            <excludeArtifactIds>yz-module-system,yz-module-infra,yz-water,yz-module-report,yz-common,yz-spring-boot-starter-biz-data-permission,yz-spring-boot-starter-biz-tenant,yz-spring-boot-starter-biz-ip,yz-spring-boot-starter-security,yz-spring-boot-starter-web,yz-spring-boot-starter-websocket,yz-spring-boot-starter-mybatis,yz-spring-boot-starter-redis,yz-spring-boot-starter-job,yz-spring-boot-starter-mq,yz-spring-boot-starter-excel,yz-spring-boot-starter-monitor,yz-spring-boot-starter-protection</excludeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>
