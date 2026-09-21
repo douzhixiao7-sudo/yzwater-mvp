@@ -7,9 +7,10 @@ window.APP_CONFIG = {
 
 
   api: {
-    // baseUrl: 'https://yzriver.sy-digit.com',
+    // 本地联调：前端与后端运行在同一设备，手机访问时使用该设备的主机名
     
-    baseUrl: 'http://172.20.10.4:48082',
+    baseUrl: new URL(window.location.protocol + '//' + window.location.hostname + ':48082').origin,
+    wsBaseUrl: (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.hostname + ':48082',
     
     // 请求超时时间（毫秒）
     timeout: 20000,
