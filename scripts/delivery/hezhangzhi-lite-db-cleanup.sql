@@ -1,0 +1,122 @@
+-- 河长制交付版：清理现有库（菜单 / 定时任务 / 短信）
+-- 在 yzwater_isolated 上执行；可重复执行（幂等）。
+
+BEGIN;
+
+-- ========== 1. 补齐保留菜单的 component ==========
+UPDATE system_menu SET component = 'yz/headLevel/riverChiefHistory', update_time = NOW()
+WHERE id = 2006239023273791490 AND deleted = 0;
+
+UPDATE system_menu SET component = 'yz/problem/problemFeedback', update_time = NOW()
+WHERE id = 2001917010387972097 AND deleted = 0;
+
+UPDATE system_menu SET component = 'yz/problem/problemStatistics', update_time = NOW()
+WHERE id = 2006238396573470721 AND deleted = 0;
+
+-- ========== 2. 逻辑删除不交付菜单（整棵子树）==========
+-- 顶层整组：基础设施、河长管理、泵站设备、报表、备件、故障、防汛、养护、数据查询、技术资料、巡检、调度、工作流
+WITH RECURSIVE doomed AS (
+  SELECT id FROM system_menu
+  WHERE deleted = 0 AND id IN (
+    1997973786857152514, -- 基础设施
+    2006207100975448065, -- 河长管理
+    4000,                -- 泵站设备
+    1281,                -- 报表管理
+    4060,                -- 库存备件
+    4080,                -- 故障维修
+    2013131574932848642, -- 防汛抗旱
+    4090,                -- 养护计划
+    202603191001,        -- 数据查询
+    4120,                -- 技术资料库
+    4200,                -- 巡检管理
+    2021826773735881721, -- 调度管理
+    1185,                -- 工作流程
+    -- 河长制下删除项
+    2052329968570077185, -- 正式公示牌管理
+    2052946724376416258, -- 提防管理
+    2052947049724383233, -- 泵站管理
+    2052947684934946817, -- 灌区管理
+    -- 系统管理下删除项
+    1224,                -- 租户管理
+    108,                 -- 审计日志
+    1261,                -- OAuth 2.0
+    2447,                -- 三方登录
+    2130,                -- 邮箱管理
+    2144,                -- 站内信管理
+    107,                 -- 通知公告
+    -- 系统监控下删除项（保留文件管理、配置管理）
+    115,                 -- 代码生成
+    1070,                -- 代码生成案例
+    1255,                -- 数据源配置
+    114,                 -- 表单构建
+    116,                 -- API 接口
+    1083,                -- API 日志
+    2525,                -- WebSocket
+    110,                 -- 定时任务
+    2740                 -- 监控中心
+  )
+  UNION ALL
+  SELECT c.id FROM system_menu c
+  JOIN doomed d ON c.parent_id = d.id
+  WHERE c.deleted = 0
+)
+UPDATE system_menu m
+SET deleted = 1, update_time = NOW()
+FROM doomed
+WHERE m.id = doomed.id AND m.deleted = 0;
+
+-- ========== 3. 停用并逻辑删除无效定时任务 ==========
+UPDATE infra_job
+SET status = 2, deleted = 1, update_time = NOW()
+WHERE deleted = 0
+  AND handler_name IN (
+    'yzWeatherCollectJob',
+    'yzWeatherStationCollectJob',
+    'yzWeatherFyCollectJob',
+    'iotRealtimeDataPullJob',
+    'xfhhVideoSyncJob'
+  );
+
+-- ========== 4. 短信：控制台渠道 + 清空真实密钥 ==========
+-- 字典增加 DEBUG_CONSOLE
+INSERT INTO system_dict_data (id, sort, label, value, dict_type, status, color_type, css_class, remark, creator, create_time, updater, update_time, deleted)
+SELECT 202609210001, 6, '调试(控制台日志)', 'DEBUG_CONSOLE', 'system_sms_channel_code', 0, 'info', '', '交付模拟短信，只打日志', '1', NOW(), '1', NOW(), 0
+WHERE NOT EXISTS (
+  SELECT 1 FROM system_dict_data WHERE dict_type = 'system_sms_channel_code' AND value = 'DEBUG_CONSOLE' AND deleted = 0
+);
+
+-- 控制台短信渠道（启用）
+INSERT INTO system_sms_channel (id, signature, code, status, remark, api_key, api_secret, callback_url, creator, create_time, updater, update_time, deleted)
+SELECT 202609210002, '交付控制台', 'DEBUG_CONSOLE', 0, '验证码与通知只打后端日志，不发真实短信', 'console', 'console', NULL, '1', NOW(), '1', NOW(), 0
+WHERE NOT EXISTS (
+  SELECT 1 FROM system_sms_channel WHERE id = 202609210002
+);
+
+UPDATE system_sms_channel
+SET signature = '交付控制台',
+    code = 'DEBUG_CONSOLE',
+    status = 0,
+    remark = '验证码与通知只打后端日志，不发真实短信',
+    api_key = 'console',
+    api_secret = 'console',
+    deleted = 0,
+    update_time = NOW()
+WHERE id = 202609210002;
+
+-- 所有模板改挂控制台渠道
+UPDATE system_sms_template
+SET channel_id = 202609210002,
+    channel_code = 'DEBUG_CONSOLE',
+    update_time = NOW()
+WHERE deleted = 0;
+
+-- 清空并禁用其它真实/调试钉钉渠道
+UPDATE system_sms_channel
+SET status = 1,
+    api_key = '',
+    api_secret = '',
+    update_time = NOW()
+WHERE deleted = 0
+  AND id <> 202609210002;
+
+COMMIT;

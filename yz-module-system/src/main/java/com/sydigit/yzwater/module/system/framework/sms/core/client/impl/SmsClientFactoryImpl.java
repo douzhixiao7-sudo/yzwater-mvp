@@ -78,6 +78,7 @@ public class SmsClientFactoryImpl implements SmsClientFactory {
         switch (channelEnum) {
             case ALIYUN: return new AliyunSmsClient(properties);
             case DEBUG_DING_TALK: return new DebugDingTalkSmsClient(properties);
+            case DEBUG_CONSOLE: return new DebugConsoleSmsClient(properties);
             case TENCENT: return new TencentSmsClient(properties);
             case HUAWEI: return  new HuaweiSmsClient(properties);
             case QINIU: return new QiniuSmsClient(properties);
