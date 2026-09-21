@@ -1,0 +1,3 @@
+- 已在 `doc/xunjian-pg-design.md` 新增“2.5 ER 图与关系说明”章节。
+- 使用 Mermaid `erDiagram` 描述巡检模块核心表、复用表（iot_device / iot_device_location）及流程实例关联（ACT_HI_PROCINST）。
+- 同时给出 1:N、1:1、0..1 三类关系口径，便于评审和后续后端实现对齐。
