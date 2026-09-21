@@ -73,6 +73,7 @@ spring:
           username: root
           password: root
         tdengine: # IoT 数据库（需要 IoT 物联网再开启噢！）
+          lazy: true # 本地启动时不连接，使用 IoT 功能时再初始化
           url: jdbc:TAOS-WS://101.227.41.85:6041/yzwater?varcharAsString=true
           driver-class-name: com.taosdata.jdbc.ws.WebSocketDriver
           username: root
@@ -226,6 +227,9 @@ wx:
 
 # 芋道配置项，设置当前项目所有自定义的配置
 yz:
+  iot:
+    tdengine:
+      init-enabled: false # 本地启动不执行 TDengine 自动建表
   captcha:
     enable: false # 本地环境，暂时关闭图片验证码，方便登录等接口的测试；
   security:
