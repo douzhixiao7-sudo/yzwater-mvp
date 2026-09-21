@@ -27,11 +27,23 @@ const LOGOUT_NAV_EXTRANET =
 /** 当前访问是否视为内网：仅根据 hostname 是否以 192.168.6.101 开头 */
 const isIntranetHost = (): boolean => window.location.hostname.startsWith('192.168.6.101')
 
-/** 退出后导航：优先 VITE_LOGOUT_NAVIGATION_URL；否则按 host 选内/外网导航 */
+/** 本地开发：回到本机登录页，避免跳到作战室导航 */
+const isLocalHost = (): boolean => {
+  const host = window.location.hostname
+  return host === 'localhost' || host === '127.0.0.1' || host === '::1'
+}
+
+/** 退出后导航：优先 VITE_LOGOUT_NAVIGATION_URL；本地走 /login；否则按 host 选内/外网导航 */
 const resolveLogoutNavigationUrl = (): string => {
   const explicit = import.meta.env.VITE_LOGOUT_NAVIGATION_URL
   if (explicit && String(explicit).trim()) {
     return String(explicit).trim()
+  }
+  if (isLocalHost()) {
+    return `${window.location.origin}${import.meta.env.VITE_BASE_PATH || '/'}login`.replace(
+      /([^:]\/)\/+/g,
+      '$1'
+    )
   }
   return isIntranetHost() ? LOGOUT_NAV_INTRANET : LOGOUT_NAV_EXTRANET
 }

@@ -140,3 +140,71 @@ INSERT INTO yz_water_reservoir (
 ) SELECT 2001237187037638657, 2101942000000000001, 'DEMO-RES-001', '月塘水库(交付样例)', '1', NOW(), '1', NOW(), 0
 WHERE NOT EXISTS (SELECT 1 FROM yz_water_reservoir WHERE id = 2001237187037638657);
 
+
+
+-- 河长办 BF：对齐河道 facility_id，并同步主表几何，保证手机端 buffer-query 可检索
+UPDATE yz_river_channel_bf bf
+SET facility_id = m.facility_id,
+    update_time = NOW()
+FROM yz_river_channel m
+WHERE m.id = bf.id
+  AND m.facility_id IS NOT NULL
+  AND (bf.facility_id IS DISTINCT FROM m.facility_id);
+
+INSERT INTO yz_water_facility_base_bf (
+  id, facility_code, facility_name, facility_type, status, admin_region_code,
+  admin_region, manage_unit, attributes, basin_code, safety_level, design_standard,
+  geom, geom_type, srid, source_type, creator, create_time, updater, update_time, deleted
+)
+SELECT
+  b.id, b.facility_code, b.facility_name, b.facility_type, b.status, b.admin_region_code,
+  b.admin_region, b.manage_unit, b.attributes, b.basin_code, b.safety_level, b.design_standard,
+  b.geom, b.geom_type, b.srid, b.source_type, b.creator, b.create_time, b.updater, NOW(), COALESCE(b.deleted, 0)
+FROM yz_water_facility_base b
+WHERE b.id IN (
+  SELECT facility_id FROM yz_river_channel_bf WHERE facility_id IS NOT NULL
+  UNION
+  SELECT facility_id FROM yz_water_reservoir_bf WHERE facility_id IS NOT NULL
+)
+  AND NOT EXISTS (SELECT 1 FROM yz_water_facility_base_bf x WHERE x.id = b.id);
+
+UPDATE yz_water_facility_base_bf bf
+SET geom = b.geom,
+    geom_type = b.geom_type,
+    srid = COALESCE(b.srid, 4490),
+    update_time = NOW(),
+    deleted = 0
+FROM yz_water_facility_base b
+WHERE b.id = bf.id
+  AND b.geom IS NOT NULL
+  AND bf.geom IS NULL;
+
+UPDATE yz_river_section_bf s
+SET start_longitude = m.start_longitude,
+    start_latitude = m.start_latitude,
+    end_longitude = m.end_longitude,
+    end_latitude = m.end_latitude,
+    update_time = NOW()
+FROM yz_river_section m
+WHERE m.id = s.id
+  AND m.start_longitude IS NOT NULL
+  AND (s.start_longitude IS NULL OR s.end_longitude IS NULL);
+
+UPDATE yz_water_reservoir_bf r
+SET longitude = m.longitude,
+    latitude = m.latitude,
+    update_time = NOW()
+FROM yz_water_reservoir m
+WHERE m.id = r.id
+  AND (r.longitude IS NULL OR r.latitude IS NULL);
+
+-- 文件存储：交付/本地联调默认用数据库存储，避免依赖内网 MinIO
+UPDATE infra_file_config SET master = false, update_time = NOW() WHERE master = true AND id <> 4;
+UPDATE infra_file_config
+SET deleted = 0,
+    master = true,
+    config = '{"@class":"com.sydigit.yzwater.module.infra.framework.file.core.client.db.DBFileClientConfig","domain":"http://127.0.0.1:48082"}',
+    update_time = NOW()
+WHERE id = 4;
+
+COMMIT;

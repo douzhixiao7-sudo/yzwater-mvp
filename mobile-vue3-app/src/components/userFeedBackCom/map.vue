@@ -91,8 +91,8 @@ if (typeof global === 'undefined') {
 
 // 特权账号：允许拖拽地图，并使用更大缓冲区查询半径
 const PRIVILEGED_MOBILES = ['13270321160', '13083502622'];
-const PRIVILEGED_BUFFER_RADIUS_M = 10;
-const DEFAULT_BUFFER_RADIUS_M = 10;
+const PRIVILEGED_BUFFER_RADIUS_M = 10000;
+const DEFAULT_BUFFER_RADIUS_M = 10000;
 
 export default {
     name: 'FeedBackMap',
