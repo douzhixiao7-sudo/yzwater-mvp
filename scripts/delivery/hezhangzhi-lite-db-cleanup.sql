@@ -119,4 +119,24 @@ SET status = 1,
 WHERE deleted = 0
   AND id <> 202609210002;
 
-COMMIT;
+-- 交付样例：若水库表为空，补 1 座水库并挂到已有公示牌 id=39（月塘水库公示牌）
+INSERT INTO yz_water_facility_base_bf (
+  id, facility_code, facility_name, facility_type, status, creator, create_time, updater, update_time, deleted, source_type, srid
+) SELECT 2101942000000000001, 'DEMO-RES-001', '月塘水库(交付样例)', 'reservoir', 'normal', '1', NOW(), '1', NOW(), 0, 'system', 4490
+WHERE NOT EXISTS (SELECT 1 FROM yz_water_facility_base_bf WHERE id = 2101942000000000001);
+
+INSERT INTO yz_water_facility_base (
+  id, facility_code, facility_name, facility_type, status, creator, create_time, updater, update_time, deleted, source_type, srid
+) SELECT 2101942000000000001, 'DEMO-RES-001', '月塘水库(交付样例)', 'reservoir', 'normal', '1', NOW(), '1', NOW(), 0, 'system', 4490
+WHERE NOT EXISTS (SELECT 1 FROM yz_water_facility_base WHERE id = 2101942000000000001);
+
+INSERT INTO yz_water_reservoir_bf (
+  id, facility_id, reservoir_code, reservoir_name, creator, create_time, updater, update_time, deleted
+) SELECT 2001237187037638657, 2101942000000000001, 'DEMO-RES-001', '月塘水库(交付样例)', '1', NOW(), '1', NOW(), 0
+WHERE NOT EXISTS (SELECT 1 FROM yz_water_reservoir_bf WHERE id = 2001237187037638657);
+
+INSERT INTO yz_water_reservoir (
+  id, facility_id, reservoir_code, reservoir_name, creator, create_time, updater, update_time, deleted
+) SELECT 2001237187037638657, 2101942000000000001, 'DEMO-RES-001', '月塘水库(交付样例)', '1', NOW(), '1', NOW(), 0
+WHERE NOT EXISTS (SELECT 1 FROM yz_water_reservoir WHERE id = 2001237187037638657);
+
