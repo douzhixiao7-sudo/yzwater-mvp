@@ -65,7 +65,7 @@ flowable:
 
 # MyBatis Plus 的配置项
 mybatis-plus:
-  # 使用 classpath* 扫描所有依赖 jar 内的 mapper（含 yz-module-iot-biz 中 TDengine 的 XML）
+  # 使用 classpath* 扫描所有依赖 jar 内的 mapper XML
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true # 虽然默认为 true ，但是还是显示去指定下。

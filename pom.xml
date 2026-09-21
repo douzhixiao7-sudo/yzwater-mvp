@@ -17,14 +17,14 @@
         <module>yz-module-infra</module>
         <module>yz-water</module>
         <!--        <module>yz-module-member</module>-->
-                <module>yz-module-report</module>
+        <!--        <module>yz-module-report</module>-->
         <!--        <module>yz-module-mp</module>-->
         <!--        <module>yz-module-pay</module>-->
         <!--        <module>yz-module-mall</module>-->
         <!--        <module>yz-module-crm</module>-->
         <!--        <module>yz-module-erp</module>-->
         <!--        <module>yz-module-ai</module>-->
-                <module>yz-module-iot</module>
+        <!--        <module>yz-module-iot</module>-->
     </modules>
 
     <name>${project.artifactId}</name>

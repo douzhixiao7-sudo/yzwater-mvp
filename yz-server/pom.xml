@@ -33,14 +33,6 @@
             <artifactId>yz-water</artifactId>
             <version>${revision}</version>
         </dependency>
-        <dependency>
-            <groupId>com.hikvision.ga</groupId>
-            <artifactId>artemis-http-client</artifactId>
-            <version>1.1.15.RELEASE</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/artemis-http-client-1.1.15.RELEASE.jar</systemPath>
-        </dependency>
-
         <!-- spring boot 配置所需依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -87,10 +79,6 @@
                         <include>
                             <groupId>com.sydigit.yz</groupId>
                             <artifactId>yz-common</artifactId>
-                        </include>
-                        <include>
-                            <groupId>com.sydigit.yz</groupId>
-                            <artifactId>yz-module-report</artifactId>
                         </include>
                         <include>
                             <groupId>com.sydigit.yz</groupId>
@@ -171,32 +159,7 @@
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
                             <includeScope>runtime</includeScope>
                             <!-- 下列内部 jar 已打进 yz-server.jar（BOOT-INF/lib），避免重复复制到 target/lib -->
-                            <excludeArtifactIds>yz-module-system,yz-module-infra,yz-water,yz-module-report,yz-common,yz-spring-boot-starter-biz-data-permission,yz-spring-boot-starter-biz-tenant,yz-spring-boot-starter-biz-ip,yz-spring-boot-starter-security,yz-spring-boot-starter-web,yz-spring-boot-starter-websocket,yz-spring-boot-starter-mybatis,yz-spring-boot-starter-redis,yz-spring-boot-starter-job,yz-spring-boot-starter-mq,yz-spring-boot-starter-excel,yz-spring-boot-starter-monitor,yz-spring-boot-starter-protection</excludeArtifactIds>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.3.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-local-artemis-jar</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.parent.basedir}/lib</directory>
-                                    <includes>
-                                        <include>artemis-http-client-1.1.15.RELEASE.jar</include>
-                                    </includes>
-                                </resource>
-                            </resources>
+                            <excludeArtifactIds>yz-module-system,yz-module-infra,yz-water,yz-common,yz-spring-boot-starter-biz-data-permission,yz-spring-boot-starter-biz-tenant,yz-spring-boot-starter-biz-ip,yz-spring-boot-starter-security,yz-spring-boot-starter-web,yz-spring-boot-starter-websocket,yz-spring-boot-starter-mybatis,yz-spring-boot-starter-redis,yz-spring-boot-starter-job,yz-spring-boot-starter-mq,yz-spring-boot-starter-excel,yz-spring-boot-starter-monitor,yz-spring-boot-starter-protection</excludeArtifactIds>
                         </configuration>
                     </execution>
                 </executions>

@@ -67,18 +67,6 @@ spring:
           url: jdbc:postgresql://localhost:5432/yzwater_isolated?stringtype=unspecified
           username: postgres
           password: root
-        xfhhMysql:
-          url: ${YZ_XFHH_MYSQL_URL:jdbc:mysql://221.178.149.154:9017/yzfhdd?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true}
-          driver-class-name: com.mysql.cj.jdbc.Driver
-          username: ${YZ_XFHH_MYSQL_USERNAME:root}
-          password: ${YZ_XFHH_MYSQL_PASSWORD:1!Deshine}
-        tdengine: # IoT 数据库（需要 IoT 物联网再开启噢！）
-          url: jdbc:TAOS-WS://192.168.6.102:6041/yzwater?varcharAsString=true
-          driver-class-name: com.taosdata.jdbc.ws.WebSocketDriver
-          username: root
-          password: Sydigit2025
-          druid:
-            validation-query: SELECT SERVER_STATUS() # TDengine 数据源的有效性检查 SQL
 
   # Redis 配置。Redisson 默认的配置足够使用，一般不需要进行调优
   data:
@@ -93,7 +81,7 @@ spring:
 # Quartz 配置项，对应 QuartzProperties 配置类
 spring:
   quartz:
-    auto-startup: true # 本地开发环境，尽量不要开启 Job
+    auto-startup: false # 交付版不跑已删除模块的定时任务，避免缺少 Bean 报错
     scheduler-name: schedulerName # Scheduler 名字。默认为 schedulerName
     job-store-type: jdbc # Job 存储器类型。默认为 memory 表示内存，可选 jdbc 使用数据库。
     wait-for-jobs-to-complete-on-shutdown: true # 应用关闭时，是否等待定时任务执行完成。默认为 false ，建议设置为 true
@@ -186,9 +174,6 @@ logging:
     com.sydigit.yzwater.module.statistics.dal.mysql: debug
     com.sydigit.yzwater.module.crm.dal.mysql: debug
     com.sydigit.yzwater.module.erp.dal.mysql: debug
-    com.sydigit.yzwater.module.iot.dal.mysql: debug
-    com.sydigit.yzwater.module.iot.dal.tdengine: DEBUG
-    com.sydigit.yzwater.module.iot.service.rule: debug
     com.sydigit.yzwater.module.ai.dal.mysql: debug
     org.springframework.context.support.PostProcessorRegistrationDelegate: ERROR # TODO 芋艿：先禁用，Spring Boot 3.X 存在部分错误的 WARN 提示
 
@@ -230,47 +215,6 @@ yz:
     enable: false # 本地环境，暂时关闭图片验证码，方便登录等接口的测试；
   security:
     mock-enable: true
-  weather:
-    enabled: true
-    # 支持三种写法：
-    # 1. 固定 URL：直接请求
-    # 2. 含 {timestamp}：自动替换为 10 位秒级时间戳
-    # 3. 含 {synTime}：自动替换为 yyyy-MM-dd
-    url: ${YZ_WEATHER_URL:https://api.caiyunapp.com/v2.6/bdBB148pDfeEpvPe/119.18432,32.27197/weather?alert=true&hourlysteps=24}
-    timeout-millis: ${YZ_WEATHER_TIMEOUT_MILLIS:5000}
-    append-timestamp: ${YZ_WEATHER_APPEND_TIMESTAMP:false}
-    station-spider:
-      enabled: ${YZ_WEATHER_STATION_SPIDER_ENABLED:true}
-      timeout-millis: ${YZ_WEATHER_STATION_SPIDER_TIMEOUT_MILLIS:8000}
-      url-template: ${YZ_WEATHER_STATION_SPIDER_URL_TEMPLATE:https://weatherwechat.chtot.com/DataMetar/GetSurfEleHoursByStaID?stationID={stationCode}&order=asc}
-      referer: ${YZ_WEATHER_STATION_SPIDER_REFERER:https://weatherwechat.chtot.com/Home/Index?appcode=yizheng_wx&title=0sfV98zsxvg=}
-      user-agent: ${YZ_WEATHER_STATION_SPIDER_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36}
-      cookie: ${YZ_WEATHER_STATION_SPIDER_COOKIE:}
-    fy:
-      enabled: ${YZ_WEATHER_FY_ENABLED:true}
-      storage-root: ${YZ_WEATHER_FY_STORAGE_ROOT:.}
-      timeout-millis: ${YZ_WEATHER_FY_TIMEOUT_MILLIS:10000}
-      referer: ${YZ_WEATHER_FY_REFERER:https://www.qweather.com/}
-      user-agent: ${YZ_WEATHER_FY_USER_AGENT:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36}
-      fengyun2-url-template: ${YZ_WEATHER_FY2_URL_TEMPLATE:https://imagery.qweather.com/imagery/satellite/china_fy2/thumbnail/{fileName}}
-      fengyun4-url-template: ${YZ_WEATHER_FY4_URL_TEMPLATE:http://image.nmc.cn/product/{ymd}/WXBL/medium/SEVP_NSMC_WXBL_FY4B_ETCC_ACHN_LNO_PY_{time}00000.JPG?v={timestamp}}
-      himawari8-url-template: ${YZ_WEATHER_HIMAWARI8_URL_TEMPLATE:https://imagery.qweather.com/imagery/satellite/japan/thumbnail/{fileName}}
-  video:
-    hk:
-      enabled: ${YZ_VIDEO_HK_ENABLED:true}
-      host: ${YZ_VIDEO_HK_HOST:192.168.6.3}
-      preview-public-base-url: ${YZ_VIDEO_HK_PREVIEW_PUBLIC_BASE_URL:ws://221.178.149.154:9010}
-      app-key: ${YZ_VIDEO_HK_APP_KEY:21632318}
-      app-secret: ${YZ_VIDEO_HK_APP_SECRET:lvP4VCN7u35pGM8dexaY}
-      event-dest: ${YZ_VIDEO_HK_EVENT_DEST:http://127.0.0.1:48082/admin-api/jm-data/yz/video/eventRcv}
-      event-types: ${YZ_VIDEO_HK_EVENT_TYPES:42200211236000}
-      event-levels: ${YZ_VIDEO_HK_EVENT_LEVELS:0}
-      page-size: ${YZ_VIDEO_HK_PAGE_SIZE:500}
-    screen:
-      excluded-region-index-codes:
-        - bcae4eb36bd745dcb3e034bb6c8c16d5
-      excluded-region-names:
-        - 录像存储
   usercenter:
     client-code: ${YZ_USERCENTER_CLIENT_CODE:h1gblpaz2ndx79zlmnejq6p0zrvo7a3f}
     client-id: ${YZ_USERCENTER_CLIENT_ID:95ab783b4f5e4138bd4024f1d13050de}

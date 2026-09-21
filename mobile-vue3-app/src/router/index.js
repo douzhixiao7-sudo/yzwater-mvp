@@ -13,8 +13,6 @@ import ShortUrlDetail from '@/components/userFeedBackCom/shortUrlDetail.vue'
 import FixFeedBack from '@/components/adminCom/fixFeedBack.vue'
 import FeedBackMap from '@/components/userFeedBackCom/map.vue'
 import MyPage from '@/components/userFeedBackCom/myPage.vue'
-import Test from '@/components/demo/test.vue'
-import LocationDemo from '@/components/demo/locationDemo.vue'
 const routes = [
   {
     path: '/',
@@ -98,18 +96,6 @@ const routes = [
     path: '/myPage',
     name: 'MyPage',
     component: MyPage,
-    meta: { showBackButton: true }
-  },
-  {
-    path: '/test',
-    name: 'Test',
-    component: Test,
-    meta: { showBackButton: true }
-  },
-  {
-    path: '/locationDemo',
-    name: 'LocationDemo',
-    component: LocationDemo,
     meta: { showBackButton: true }
   }
 ]
