@@ -358,9 +358,8 @@
               <div class="qr-item">
                 <div class="qr-label">移动端后台</div>
                 <div class="qr-body">
-                  <div class="qr-static-frame">
-                    <img :src="h5AdminLoginQrImg" alt="扫码进入移动端后台" class="qr-static-img" />
-                  </div>
+                  <Qrcode v-if="h5AdminLoginQrUrl" tag="img" :text="h5AdminLoginQrUrl" :width="160" />
+                  <div v-else class="qr-empty">-</div>
                 </div>
               </div>
             </div>
@@ -403,7 +402,6 @@ import { ElMessage, ElMessageBox, type FormInstance, type FormRules, type Upload
 import download from '@/utils/download'
 import UploadImgs from '@/components/UploadFile/src/UploadImgs.vue'
 import { Qrcode } from '@/components/Qrcode'
-import h5AdminLoginQrImg from '@/assets/imgs/h5_adminLogin.png'
 import TiandituGeoJsonEditor from '@/components/Gis/TiandituGeoJsonEditor.vue'
 import TiandituGeoJsonPreview from '@/components/Gis/TiandituGeoJsonPreview.vue'
 import {
@@ -668,6 +666,7 @@ const createForm = reactive<SignboardCreateForm>({
 
 const riverInfoQrCodeAddress = ref('')
 const riverIssueQrCodeAddress = ref('')
+const h5AdminLoginQrCodeAddress = ref('')
 
 const unwrapConfigValue = (res: any) => {
   return (res && (res.data ?? res)) as string
@@ -690,15 +689,21 @@ const joinQrUrl = (base: string, qrCode: string) => {
 
 const riverInfoQrUrl = computed(() => joinQrUrl(riverInfoQrCodeAddress.value, createForm.qrCode || ''))
 const riverIssueQrUrl = computed(() => joinQrUrl(riverIssueQrCodeAddress.value, createForm.qrCode || ''))
+/** 移动端后台登录入口，不需要挂公示牌 qrCode */
+const h5AdminLoginQrUrl = computed(() => (h5AdminLoginQrCodeAddress.value || '').trim())
 
 const loadQrCodeAddress = async () => {
-  if (riverInfoQrCodeAddress.value && riverIssueQrCodeAddress.value) return
-  const [riverInfo, riverIssue] = await Promise.all([
+  if (riverInfoQrCodeAddress.value && riverIssueQrCodeAddress.value && h5AdminLoginQrCodeAddress.value) {
+    return
+  }
+  const [riverInfo, riverIssue, adminLogin] = await Promise.all([
     getConfigKey('river_info_qr_code_address'),
-    getConfigKey('river_issue_qr_code_address')
+    getConfigKey('river_issue_qr_code_address'),
+    getConfigKey('h5_admin_login_qr_code_address')
   ])
   riverInfoQrCodeAddress.value = unwrapConfigValue(riverInfo) || ''
   riverIssueQrCodeAddress.value = unwrapConfigValue(riverIssue) || ''
+  h5AdminLoginQrCodeAddress.value = unwrapConfigValue(adminLogin) || ''
 }
 
 type RiverTreeNode = {

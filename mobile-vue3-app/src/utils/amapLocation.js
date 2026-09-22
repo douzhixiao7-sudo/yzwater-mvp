@@ -3,11 +3,34 @@
  * 封装高德API获取当前位置的方法
  */
 
+/** 定位失败时的默认坐标（仪征附近，WGS84：纬度, 经度） */
+export const DEFAULT_LOCATION = {
+  latitude: 32.278043559397815,
+  longitude: 119.17581272883548
+}
+
+async function buildLocationResult(wgs84Lng, wgs84Lat, accuracy = null, isDefault = false) {
+  const [gcjLng, gcjLat] = transformWGS84ToGCJ02(wgs84Lng, wgs84Lat)
+  const address = await getAddressFromCoordinates(gcjLng, gcjLat)
+  return {
+    longitude: wgs84Lng,
+    latitude: wgs84Lat,
+    gcj02Longitude: gcjLng,
+    gcj02Latitude: gcjLat,
+    address,
+    accuracy,
+    timestamp: new Date().toISOString(),
+    isDefault
+  }
+}
+
 /**
  * 获取当前位置（使用浏览器原生定位 + 高德逆地理编码）
- * @returns {Promise<Object>} 返回位置信息 { longitude, latitude, address, accuracy, timestamp }
+ * @param {{ useFallback?: boolean }} [options] useFallback 默认 true：失败时回退默认坐标
+ * @returns {Promise<Object>} 返回位置信息 { longitude, latitude, address, accuracy, timestamp, isDefault }
  */
-export async function getCurrentLocationByAmap() {
+export async function getCurrentLocationByAmap(options = {}) {
+  const { useFallback = true } = options
   try {
     // 检查浏览器是否支持定位
     if (!navigator.geolocation) {
@@ -37,26 +60,22 @@ export async function getCurrentLocationByAmap() {
       )
     })
 
-    const wgs84Lng = position.coords.longitude
-    const wgs84Lat = position.coords.latitude
-
-    // 将 WGS84 坐标转换为 GCJ-02 坐标（高德地图使用 GCJ-02）
-    const [gcjLng, gcjLat] = transformWGS84ToGCJ02(wgs84Lng, wgs84Lat)
-
-    // 使用高德逆地理编码API获取地址
-    const address = await getAddressFromCoordinates(gcjLng, gcjLat)
-
-    // 返回位置信息（保存原始WGS84坐标）
-    return {
-      longitude: wgs84Lng,
-      latitude: wgs84Lat,
-      gcj02Longitude: gcjLng,
-      gcj02Latitude: gcjLat,
-      address: address,
-      accuracy: position.coords.accuracy || null,
-      timestamp: new Date().toISOString()
-    }
+    return await buildLocationResult(
+      position.coords.longitude,
+      position.coords.latitude,
+      position.coords.accuracy || null,
+      false
+    )
   } catch (error) {
+    if (useFallback) {
+      console.warn('定位失败，使用默认坐标:', error?.message || error)
+      return await buildLocationResult(
+        DEFAULT_LOCATION.longitude,
+        DEFAULT_LOCATION.latitude,
+        null,
+        true
+      )
+    }
     throw error
   }
 }

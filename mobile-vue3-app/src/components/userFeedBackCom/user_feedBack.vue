@@ -1225,9 +1225,14 @@ export default {
                     specificLocation: locationData.address
                 };
 
-                // 非静默模式才显示成功提示
+                // 非静默模式才显示提示
                 if (!silentMode) {
-                    this.showMessage('位置获取成功', 'success');
+                    this.showMessage(
+                        locationData.isDefault ? '定位失败，已使用默认位置' : '位置获取成功',
+                        locationData.isDefault ? 'warning' : 'success'
+                    );
+                } else if (locationData.isDefault) {
+                    this.showMessage('定位失败，已使用默认位置', 'warning');
                 }
 
             } catch (error) {

@@ -52,7 +52,7 @@
                             <div class="fileList">
                                 <div class="fileItem" v-for="(fileUrl, index) in detailData.uploadedFiles" :key="index"
                                     @click="previewFile(fileUrl)">
-                                    <img v-if="isImage(fileUrl)" :src="fileUrl" alt="反馈图片" />
+                                    <img v-if="isImage(fileUrl)" :src="resolveFileUrl(fileUrl)" alt="反馈图片" />
                                     <div v-else class="video-icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                             <path d="M8 5v14l11-7z" fill="#fff" />
@@ -971,9 +971,9 @@ export default {
         // 预览文件
         previewFile(fileUrl) {
             if (this.isImage(fileUrl)) {
-                window.open(fileUrl, '_blank');
+                window.open(this.resolveFileUrl(fileUrl), '_blank');
             } else {
-                window.open(fileUrl, '_blank');
+                window.open(this.resolveFileUrl(fileUrl), '_blank');
             }
         },
 

@@ -1065,8 +1065,12 @@ export default {
                     
                     // 更新 fileList 中对应文件项，添加 serverUrl 字段
                     const fileIndex = this.internalFileList.findIndex(f => f.id === fileItem.id);
+                    // 127.0.0.1 等本机地址改为当前可访问的 api.baseUrl，便于手机回显
+                    const resolvedUrl = this.resolveFileUrl
+                        ? this.resolveFileUrl(response.data)
+                        : response.data;
                     if (fileIndex !== -1) {
-                        this.internalFileList[fileIndex].serverUrl = response.data;
+                        this.internalFileList[fileIndex].serverUrl = resolvedUrl;
                         this.internalFileList[fileIndex].uploading = false;
                         // 清理 AbortController
                         this.internalFileList[fileIndex].abortController = null;
@@ -1080,7 +1084,7 @@ export default {
                     
                     // 简化的上传结果，只包含 fileUrl, fileName, fileType
                     const uploadResult = {
-                        fileUrl: response.data,
+                        fileUrl: resolvedUrl,
                         fileName: fileItem.name,
                         fileType: fileItem.type
                     };

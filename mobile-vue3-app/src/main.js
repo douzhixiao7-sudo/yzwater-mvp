@@ -18,8 +18,18 @@ const app = createApp(App);
 
 // 挂载工具函数到Vue实例
 app.config.globalProperties.$tool = tool;
+app.config.globalProperties.resolveFileUrl = tool.resolveFileUrl;
 // 挂载http函数到Vue实例
 app.config.globalProperties.$http = http;
+
+// Options API 组件可直接用 resolveFileUrl()
+app.mixin({
+  methods: {
+    resolveFileUrl(url) {
+      return tool.resolveFileUrl(url)
+    }
+  }
+})
 app.use(router)
 app.use(store)
 // app.use(Antd)

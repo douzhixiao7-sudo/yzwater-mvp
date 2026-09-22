@@ -30,7 +30,7 @@
                 <div class="fileList" v-if="currentTask?.problemReviewImages && currentTask.problemReviewImages.length > 0">
                     <div class="fileItem" v-for="(fileUrl, index) in currentTask.problemReviewImages" :key="index"
                         @click="previewFile(fileUrl)">
-                        <img v-if="isImage(fileUrl)" :src="fileUrl" alt="审核图片" />
+                        <img v-if="isImage(fileUrl)" :src="resolveFileUrl(fileUrl)" alt="审核图片" />
                         <div v-else class="video-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path d="M8 5v14l11-7z" fill="#fff" />
@@ -63,7 +63,7 @@
                 <div class="fileList" v-if="processingTask?.problemHandleImages && processingTask.problemHandleImages.length > 0">
                     <div class="fileItem" v-for="(fileUrl, index) in processingTask.problemHandleImages" :key="index"
                         @click="previewFile(fileUrl)">
-                        <img v-if="isImage(fileUrl)" :src="fileUrl" alt="处理图片" />
+                        <img v-if="isImage(fileUrl)" :src="resolveFileUrl(fileUrl)" alt="处理图片" />
                         <div v-else class="video-icon">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path d="M8 5v14l11-7z" fill="#fff" />

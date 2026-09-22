@@ -620,10 +620,10 @@ export default {
         previewFile(fileUrl) {
             if (this.isImage(fileUrl)) {
                 // 预览图片
-                window.open(fileUrl, '_blank');
+                window.open(this.resolveFileUrl(fileUrl), '_blank');
             } else {
                 // 预览视频
-                window.open(fileUrl, '_blank');
+                window.open(this.resolveFileUrl(fileUrl), '_blank');
             }
         },
 

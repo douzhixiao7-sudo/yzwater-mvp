@@ -195,4 +195,39 @@ tool.isIOS = function() {
     return tool.getDeviceType() === 'ios';
 }
 
+/**
+ * 将后端返回的文件 URL 改写为当前可访问的地址。
+ * 数据库文件存储常带 http://127.0.0.1:48082，手机端无法访问本机回环，需换成 api.baseUrl。
+ * @param {string} url
+ * @returns {string}
+ */
+tool.resolveFileUrl = function (url) {
+	if (!url || typeof url !== 'string') {
+		return url;
+	}
+	if (url.startsWith('blob:') || url.startsWith('data:') || url.startsWith('/')) {
+		return url;
+	}
+	const apiBase = String(window.getConfig?.('api.baseUrl') || '').replace(/\/$/, '');
+	if (!apiBase) {
+		return url;
+	}
+	try {
+		const parsed = new URL(url);
+		const host = parsed.hostname;
+		const isLoopback = host === '127.0.0.1' || host === 'localhost';
+		const isFileApi = parsed.pathname.includes('/admin-api/infra/file/') || parsed.pathname.includes('/app-api/infra/file/');
+		if (!isLoopback && !isFileApi) {
+			return url;
+		}
+		// 仅改写本机后端域名，保留 path
+		if (isLoopback || parsed.port === '48082') {
+			return apiBase + parsed.pathname + parsed.search;
+		}
+		return url;
+	} catch (e) {
+		return url;
+	}
+};
+
 export default tool;

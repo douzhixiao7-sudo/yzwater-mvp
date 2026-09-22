@@ -645,9 +645,9 @@ export default {
         // 预览文件
         previewFile(fileUrl) {
             if (this.isImage(fileUrl)) {
-                window.open(fileUrl, '_blank');
+                window.open(this.resolveFileUrl(fileUrl), '_blank');
             } else {
-                window.open(fileUrl, '_blank');
+                window.open(this.resolveFileUrl(fileUrl), '_blank');
             }
         },
 

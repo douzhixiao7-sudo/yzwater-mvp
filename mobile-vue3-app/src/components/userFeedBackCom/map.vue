@@ -278,7 +278,10 @@ export default {
                     await this.updateLocationInfo(wgsLat, wgsLng);
                 }
                 
-                this.showMessage('位置获取成功', 'success');
+                this.showMessage(
+                    locationData.isDefault ? '定位失败，已使用默认位置' : '位置获取成功',
+                    locationData.isDefault ? 'warning' : 'success'
+                );
             } catch (error) {
                 console.error('获取位置失败:', error);
                 this.showMessage('定位失败,请稍后再试', 'error');
