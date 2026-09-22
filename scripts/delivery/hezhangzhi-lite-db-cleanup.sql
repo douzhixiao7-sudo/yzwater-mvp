@@ -198,12 +198,47 @@ FROM yz_water_reservoir m
 WHERE m.id = r.id
   AND (r.longitude IS NULL OR r.latitude IS NULL);
 
+-- 移动端后台登录二维码地址（与反馈码同前缀，路径固定 /h5/adminLogin）
+INSERT INTO infra_config (
+  id, category, type, name, config_key, value, visible, remark,
+  creator, create_time, updater, update_time, deleted
+)
+SELECT
+  202609220001,
+  'H5前端',
+  2,
+  '移动端后台登录二维码地址',
+  'h5_admin_login_qr_code_address',
+  'http://localhost:3000/h5/adminLogin',
+  true,
+  '扫码进入移动端河长/后台登录页；改前缀即可切换环境',
+  '1',
+  NOW(),
+  '1',
+  NOW(),
+  0
+WHERE NOT EXISTS (
+  SELECT 1 FROM infra_config WHERE config_key = 'h5_admin_login_qr_code_address' AND deleted = 0
+);
+
+-- 交付默认：H5 / 短链 一律指向本机 localhost（对方部署后再改成自己的域名）
+UPDATE infra_config SET value = 'http://localhost:3000/h5/user_BaseInfo', update_time = NOW()
+WHERE config_key = 'river_info_qr_code_address' AND deleted = 0;
+UPDATE infra_config SET value = 'http://localhost:3000/h5/login', update_time = NOW()
+WHERE config_key = 'river_issue_qr_code_address' AND deleted = 0;
+UPDATE infra_config SET value = 'http://localhost:3000/h5/adminLogin', update_time = NOW()
+WHERE config_key = 'h5_admin_login_qr_code_address' AND deleted = 0;
+UPDATE infra_config SET value = 'http://localhost:3000/h5/shortUrlDetail', update_time = NOW()
+WHERE config_key = 'feedback_person_redirect_url' AND deleted = 0;
+UPDATE infra_config SET value = 'http://localhost:3000/h5/adminLogin', update_time = NOW()
+WHERE config_key = 'handle_person_redirect_url' AND deleted = 0;
+
 -- 文件存储：交付/本地联调默认用数据库存储，避免依赖内网 MinIO
 UPDATE infra_file_config SET master = false, update_time = NOW() WHERE master = true AND id <> 4;
 UPDATE infra_file_config
 SET deleted = 0,
     master = true,
-    config = '{"@class":"com.sydigit.yzwater.module.infra.framework.file.core.client.db.DBFileClientConfig","domain":"http://127.0.0.1:48082"}',
+    config = '{"@class":"com.sydigit.yzwater.module.infra.framework.file.core.client.db.DBFileClientConfig","domain":"http://localhost:48082"}',
     update_time = NOW()
 WHERE id = 4;
 
